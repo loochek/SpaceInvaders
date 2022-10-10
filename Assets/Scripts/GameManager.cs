@@ -37,8 +37,7 @@ public class GameManager : MonoBehaviour
     public float gameFinishDelay = 2.0f;
 
     public GameState CurrGameState { get; private set; } = GameState.PlayerDead;
-
-
+    
     private int CurrScore
     {
         get => _currScore;
@@ -53,6 +52,8 @@ public class GameManager : MonoBehaviour
     private TMP_Text _livesLabelComponent;
     private TMP_Text _notificationLabelComponent;
 
+    private EnemyGridController _gridControllerComponent;
+
     private GameObject _player;
 
     [SerializeField]
@@ -61,6 +62,7 @@ public class GameManager : MonoBehaviour
     private int _currScore = 0;
     private float _respawnTime;
     private float _gameFinishTime;
+    private bool _gameplayStarted = false;
     private bool _gameplayEnded = false;
 
     // Start is called before the first frame update
@@ -69,7 +71,8 @@ public class GameManager : MonoBehaviour
         _scoreLabelComponent = scoreLabel.GetComponent<TMP_Text>();
         _livesLabelComponent = livesLabel.GetComponent<TMP_Text>();
         _notificationLabelComponent = notificationLabel.GetComponent<TMP_Text>();
-        
+        _gridControllerComponent = gridController.GetComponent<EnemyGridController>();
+
         // Initial
         UpdateUIText();
         
@@ -81,8 +84,14 @@ public class GameManager : MonoBehaviour
     {
         if (CurrGameState == GameState.PlayerDead && Time.time > _respawnTime)
         {
-            if (_player is not null)
+            if (!_gameplayStarted)
             {
+                _gridControllerComponent.StartMovement();
+                _gameplayStarted = true;
+            }
+            else
+            {
+                _gridControllerComponent.ResumeMovement();
                 Destroy(_player);
             }
             
@@ -102,6 +111,7 @@ public class GameManager : MonoBehaviour
     {
         if (LivesCount > 0) {
             CurrGameState = GameState.PlayerDead;
+            _gridControllerComponent.PauseMovement();
             _respawnTime = Time.time + respawnDelay;
         }
         else
@@ -130,8 +140,8 @@ public class GameManager : MonoBehaviour
 
     private void UpdateUIText()
     {
-        _scoreLabelComponent.SetText($"Score: {CurrScore}");
-        _livesLabelComponent.SetText($"Lives: {LivesCount}");
+        _scoreLabelComponent.SetText($"SCORE {CurrScore}");
+        _livesLabelComponent.SetText($"LIVES {LivesCount}");
     }
 
     private void ScheduleGameFinish()
@@ -148,11 +158,11 @@ public class GameManager : MonoBehaviour
         switch (CurrGameState)
         {
             case GameState.GameOver:
-                _notificationLabelComponent.SetText("Game Over");
+                _notificationLabelComponent.SetText("GAME OVER");
                 break;
             
             case GameState.GameWin:
-                _notificationLabelComponent.SetText("Win");
+                _notificationLabelComponent.SetText("WIN");
                 break;
             
             default:

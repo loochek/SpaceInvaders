@@ -23,11 +23,14 @@ public class EnemyGridController : MonoBehaviour
     private int _aliveEnemiesCount;
 
     private float _nextShootTime;
+    
+    private Animator _animator;
 
     // Start is called before the first frame update
     void Start()
     {
         _gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _animator = GetComponent<Animator>();
         
         _enemies = new List<List<GameObject>>();
         
@@ -104,5 +107,20 @@ public class EnemyGridController : MonoBehaviour
         {
             _gameMgr.OnAllEnemiesDeath();
         }
+    }
+    
+    public void StartMovement()
+    {
+        _animator.Play("EnemyGridMovement");
+    }
+
+    public void PauseMovement()
+    {
+        _animator.speed = 0.0f;
+    }
+
+    public void ResumeMovement()
+    {
+        _animator.speed = 1.0f;
     }
 }
