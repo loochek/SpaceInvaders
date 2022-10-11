@@ -12,6 +12,7 @@ public class EnemyGridController : MonoBehaviour
     public List<GameObject> enemyRowTypes;
     public float firstShootDelay = 5.0f;
     public float shootTimeStride = 0.5f;
+    public float gridAnimationSpeed = 0.2f;
     
     private GameManager _gameMgr;
     
@@ -112,6 +113,7 @@ public class EnemyGridController : MonoBehaviour
     public void StartMovement()
     {
         _animator.Play("EnemyGridMovement");
+        _animator.speed = gridAnimationSpeed;
     }
 
     public void PauseMovement()
@@ -121,6 +123,6 @@ public class EnemyGridController : MonoBehaviour
 
     public void ResumeMovement()
     {
-        _animator.speed = 1.0f;
+        _animator.speed = gridAnimationSpeed;
     }
 }

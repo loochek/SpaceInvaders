@@ -168,5 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileType: {fileID: 5836756802976700367, guid: 11db0c2c563e93d649c57857d6fa006d, type: 3}
+  bonus: {fileID: 0}
+  bonusProbabilityRange: 10
   row: 0
   col: 0

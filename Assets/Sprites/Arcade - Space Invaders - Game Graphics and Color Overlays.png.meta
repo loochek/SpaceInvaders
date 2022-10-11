@@ -536,7 +536,7 @@ TextureImporter:
         width: 1
         height: 4
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -544,6 +544,27 @@ TextureImporter:
       bones: []
       spriteID: 7b90b9d83bbce3d6dbd2ed9b90d80e83
       internalID: -1580831000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: immortal_bonus
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 11
+        width: 5
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f640e5db822e8b76b058613215e66d2
+      internalID: -1200167379
       vertices: []
       indices: 
       edges: []
@@ -560,6 +581,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       enemy_proj_1_1: -1476540152
+      immortal_bonus: -1200167379
       boom: 1482204183
       enemy2_1: -1676575845
       enemy2_2: -1109123039

@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     public GameObject projectileType;
+    public GameObject bonus;
+    public int bonusProbabilityRange = 15;
     
     public int row;
     public int col;
@@ -44,5 +46,11 @@ public class EnemyController : MonoBehaviour
     {
         gameObject.SetActive(false);
         Destroy(gameObject);
+
+        // 7 is my favourite number
+        if (bonus && Random.Range(0, bonusProbabilityRange) == 7)
+        {
+            Instantiate(bonus, transform.position, Quaternion.identity);
+        }
     }
 }
