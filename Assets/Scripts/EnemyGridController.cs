@@ -14,17 +14,19 @@ public class EnemyGridController : MonoBehaviour
     public float shootTimeStride = 0.5f;
     public float gridAnimationSpeed = 0.2f;
     
+    private const int MaxShootRetries = 10;
+
     private GameManager _gameMgr;
-    
+
     private Vector3 _leftTopEdgePosOffset;
-    
+
     private List<List<GameObject>> _enemies;
 
     private int _initialEnemiesCount;
     private int _aliveEnemiesCount;
 
     private float _nextShootTime;
-    
+
     private Animator _animator;
 
     // Start is called before the first frame update
@@ -32,14 +34,14 @@ public class EnemyGridController : MonoBehaviour
     {
         _gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
         _animator = GetComponent<Animator>();
-        
+
         _enemies = new List<List<GameObject>>();
-        
+
         _initialEnemiesCount = _aliveEnemiesCount = enemiesPerRow * enemyRowTypes.Count;
 
         _leftTopEdgePosOffset = new Vector3(-enemiesPerRow, enemyRowTypes.Count) / 2 * stride;
         Vector3 leftTopEdgePos = transform.position + _leftTopEdgePosOffset;
-                                 
+
         for (int r = 0; r < enemyRowTypes.Count; r++)
         {
             _enemies.Add(new List<GameObject>());
@@ -53,7 +55,7 @@ public class EnemyGridController : MonoBehaviour
                 EnemyController enemyController = enemy.GetComponent<EnemyController>();
                 enemyController.row = r;
                 enemyController.col = c;
-                
+
                 _enemies[r].Add(enemy);
             }
         }
@@ -65,7 +67,7 @@ public class EnemyGridController : MonoBehaviour
         if (_gameMgr.CurrGameState == GameManager.GameState.PlayerAlive &&
             Time.time > _nextShootTime)
         {
-            while (!Shoot()) {};
+            for (int i = 0; !Shoot() && i < MaxShootRetries; i++) ;
             _nextShootTime = Time.time + shootTimeStride;
         }
     }
@@ -80,20 +82,20 @@ public class EnemyGridController : MonoBehaviour
             {
                 return false;
             }
-            
+
             if (_enemies[i][shootCol] is null && _enemies[i - 1][shootCol] is not null)
             {
                 shootRow = i;
                 break;
             }
         }
-        
+
         Vector3 leftTopEdgePos = transform.position + _leftTopEdgePosOffset;
         Vector3 projPosition = leftTopEdgePos + new Vector3(shootCol, -shootRow) * stride;
 
         GameObject projType = enemyRowTypes[shootRow - 1].GetComponent<EnemyController>().projectileType;
         Instantiate(projType, projPosition, Quaternion.identity);
-        
+
         return true;
     }
 
@@ -102,14 +104,14 @@ public class EnemyGridController : MonoBehaviour
         _aliveEnemiesCount--;
         EnemyController enemyController = enemy.GetComponent<EnemyController>();
         _enemies[enemyController.row][enemyController.col] = null;
-        
+
         _gameMgr.OnEnemyDeath();
         if (_aliveEnemiesCount <= 0)
         {
             _gameMgr.OnAllEnemiesDeath();
         }
     }
-    
+
     public void StartMovement()
     {
         _animator.Play("EnemyGridMovement");
