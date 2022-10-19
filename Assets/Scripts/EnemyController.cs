@@ -35,6 +35,8 @@ public class EnemyController : MonoBehaviour
         {
             collider.gameObject.SetActive(false);
             Destroy(collider.gameObject);
+
+            transform.parent = null;
             
             GetComponent<BoxCollider2D>().enabled = false;
             GetComponent<Animator>().Play("EnemyDie");

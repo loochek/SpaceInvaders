@@ -828,6 +828,7 @@ MonoBehaviour:
   - {fileID: 1717891388890748336, guid: 477f1e8a9e2e8367c8b3be89c3de8d25, type: 3}
   - {fileID: 7881663081152154117, guid: 83e8b944b7cbfe07fb62cc60cde51456, type: 3}
   - {fileID: 3705574838789655903, guid: 1c3f3c176ad3ed916b5a90c3f3e09fce, type: 3}
+  - {fileID: 7881663081152154117, guid: 83e8b944b7cbfe07fb62cc60cde51456, type: 3}
   firstShootDelay: 5
   shootTimeStride: 0.5
   gridAnimationSpeed: 0.2

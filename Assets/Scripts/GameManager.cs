@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -62,6 +63,7 @@ public class GameManager : MonoBehaviour
     private int _currScore = 0;
     private float _respawnTime;
     private float _gameFinishTime;
+    private bool _gameRestartAllowed = false;
     private bool _gameplayStarted = false;
     private bool _gameplayEnded = false;
 
@@ -82,7 +84,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (CurrGameState == GameState.PlayerDead && Time.time > _respawnTime)
+        if (CurrGameState is GameState.PlayerDead && Time.time > _respawnTime)
         {
             if (!_gameplayStarted)
             {
@@ -104,6 +106,18 @@ public class GameManager : MonoBehaviour
         if (_gameplayEnded && Time.time > _gameFinishTime)
         {
             FinishGame();
+        }
+        
+        if (CurrGameState is GameState.GameOver or GameState.GameWin &&
+            _gameRestartAllowed && Input.GetButton("Fire1"))
+        {
+            // Restart game
+            SceneManager.LoadScene("Game");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
         }
     }
 
@@ -171,5 +185,6 @@ public class GameManager : MonoBehaviour
         }
 
         notificationLabel.SetActive(true);
+        _gameRestartAllowed = true;
     }
 }
